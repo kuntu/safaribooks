@@ -327,7 +327,7 @@ class SafariBooks:
             if not os.path.isfile(COOKIES_FILE):
                 self.display.exit("Login: unable to find `cookies.json` file.\n"
                                   "    Please use the `--cred` or `--login` options to perform the login.")
-
+            self.display.info("Using cookies.json to log in. if there is error, run 'python sso_cookies.py [cookie_string]' to update cookie " )
             self.session.cookies.update(json.load(open(COOKIES_FILE)))
 
         else:

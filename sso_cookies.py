@@ -11,14 +11,31 @@ Thanks: @elrob, @noxymon
 
 import json
 import safaribooks
+import os
 
 
-def transform(cookies_string):
+def transform(cookies_string=None):
+    current_folder = os.path.dirname(os.path.realpath(__file__))
+    cookie_file = os.path.join(current_folder, "tmp.txt")
+    """
+    1 .go to profile on webpage (https://learning.oreilly.com/profile/)
+    2. open web inspector (
+        in most browser click F12, 
+        for new macos, 
+            enable Web develope option in setting>advance>show features for developer
+            there will be a new menu item "develop" in browser tool bar, click that menu and choose open web inspector
+    3. go to network->profile->(request) header->cookies 
+    """
+    if not cookies_string:
+        print("no cookie string pasted in the argument read from tmp.txt")
+        with open(cookie_file, 'r') as f:
+            cookies_string = f.readline()
+            f.close()
     cookies = {}
     for cookie in cookies_string.split("; "):
         key, value = cookie.split("=", 1)
         cookies[key] = value
-
+    print("check cookies")
     print(cookies)
     json.dump(cookies, open(safaribooks.COOKIES_FILE, 'w'))
     print("\n\nDone! Cookie Jar saved into `cookies.json`. "

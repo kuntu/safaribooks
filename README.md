@@ -1,18 +1,8 @@
 # SafariBooks
 Download and generate *EPUB* of your favorite books from [*Safari Books Online*](https://www.safaribooksonline.com) library.  
 I'm not responsible for the use of this program, this is only for *personal* and *educational* purpose.  
-Before any usage please read the *O'Reilly*'s [Terms of Service](https://learning.oreilly.com/terms/).  
+Before any usage please read the *O'Reilly*'s [Terms of Service](https://learning.oreilly.com/terms/).
 
-<a href='https://ko-fi.com/lorenz0x00' target='_blank'><img height='35' style='border:0px;height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
-
-## ✨✨ *Attention needed* ✨✨
-- This project is no longer actively maintained.  
-- *Login through `safaribooks` no longer works due to changes in ORLY APIs.*
-- *The program needs a major refactor to include new features and integrate new APIs.*
-- **However... it still work for downloading books.**  
-(Use SSO hack: log in via browser, then copy cookies into `cookies.json`, see below and issues. Love ❤️)
-
----
 
 ## Overview:
   * [Requirements & Setup](#requirements--setup)
@@ -50,6 +40,21 @@ It's really simple to use, just choose a book from the library and replace in th
 ```shell
 $ python3 safaribooks.py --cred "account_mail@mail.com:password01" XXXXXXXXXXXXX
 ```
+### fix not logon issue:
+**follow the instruction in the sso_cookies.py**
+1. **login** and go to **profile** on webpage (https://learning.oreilly.com/profile/)
+2. open web inspector (
+   * in most browser click F12, 
+     * for new macos, 
+       * enable Web developer option in setting>advance>show features for developer 
+       * there will be a new menu item "develop" in browser tool bar, click that menu and choose open web inspector
+3. go to network->profile (usually first on the left panel)->(request) header->cookies 
+4. select the cookie string and copy 
+```bash
+run python sso_cookies.py [cookie-string-from-browser]
+run python safaribooks.py book_id_from_webpage_link
+```
+
 
 The ID is the digits that you find in the URL of the book description page:  
 `https://www.safaribooksonline.com/library/view/book-name/XXXXXXXXXXXXX/`  
@@ -177,3 +182,20 @@ In this case, I suggest you to convert the `EPUB` to `AZW3` with Calibre or to `
 For any kind of problem, please don't hesitate to open an issue here on *GitHub*.  
   
 *Lorenzo Di Fuccia*
+
+# Archive
+## fixing problem cannot use logon credential:
+```bash
+Using document.cookie from the console does not include the HttpOnly cookies and they are definitely required.
+I can't work out how to access these via the console but I was able to find a way to get them that isn't too painful.
+
+Login as usual to https://learning.oreilly.com/
+Open the developer tools with F12
+Go to Network tab in the developer tools
+Access the profile page in the browser: https://learning.oreilly.com/profile/
+In the Network tab, click on the request to /profile/ (it should be the first one)
+Click on the Cookies tab in the request information
+Right-click on the Request cookies text and choose Copy All
+Paste this into the cookies.json file and then remove the outer section of the JSON document
+Run the script without passing credentials: python3 safaribooks.py 9780135262047
+```
